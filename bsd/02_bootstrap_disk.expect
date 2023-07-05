@@ -1,0 +1,19 @@
+#!/usr/bin/expect 
+
+set timeout -1
+
+spawn pdp11 simh.ini
+
+expect "sim> "
+send "boot ts0\r"
+expect ": "
+send "ra(0,0)unix\r"
+
+expect "# "
+send "dd if=/mdec/rauboot of=/dev/rra0a count=1"
+expect "# "
+send "sync"
+expect "# "
+send "halt"
+
+expect "sim> "
