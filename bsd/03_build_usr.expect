@@ -1,0 +1,58 @@
+#!/usr/bin/expect 
+
+set timeout -1
+
+source config.tcl
+source lib.tcl
+
+spawn pdp11 simh.ini
+
+boot "rq0" "ra(0,0)unix"
+
+set yymmddhhmm [clock format [clock seconds] -format "%y%m%d%H%M"]
+shell_cmd "date $yymmddhhmm"
+
+shell_cmd "hostname $hostname"
+
+shell_cmd "newfs $usr_dev"
+
+shell_cmd "mount /dev/$usr_dev /usr"
+
+shell_cmd "cd /dev"
+shell_cmd "rm *mt*"
+shell_cmd "./MAKEDEV ts0"
+shell_cmd "sync"
+
+shell_cmd "cd /usr"
+shell_cmd "mt rew"
+shell_cmd "mt fsf 6"
+shell_cmd "tar xpbf 20 /dev/rmt12"
+
+shell_cmd "mkdir src"
+shell_cmd "cd src"
+shell_cmd "mt -f /dev/rmt12 fsf"
+shell_cmd "tar xpbf 20 /dev/rmt12"
+
+shell_cmd "cd /"
+shell_cmd "chmod 755 / /usr /usr/src /usr/src/sys"
+shell_cmd "rm -f sys"
+shell_cmd "ln -s /usr/src/sys sys"
+
+shell_cmd "umount /dev/$usr_dev"
+
+expect "# "
+send "fsck /dev/$usr_dev\r"
+expect "ENTER FILENAME: "
+send "/tmp/usrfsck\r"
+expect "# "
+send "echo \$?\r"
+expect "0"
+
+shell_cmd "mount /dev/$usr_dev /usr"
+
+shell_cmd "cd /etc"
+shell_cmd "mv fstab fstab.old"
+write_file "/etc/fstab" "/dev/$root_dev       /       ufs     rw              1       1\r/dev/$swap_dev       none    swap    sw              0       0\r/dev/$usr_dev       /usr    ufs     rw              1       2\r"
+shell_cmd "cat /etc/fstab"
+
+halt

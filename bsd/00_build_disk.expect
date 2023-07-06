@@ -2,46 +2,25 @@
 
 set timeout -1
 
-#type: MSCP
-#disk: RA82
-#label: MURGATROID
-#flags:
-#bytes/sector: 512
-#sectors/track: 57
-#tracks/cylinder: 15
-#sectors/cylinder: 855
-#cylinders: 4570
-#rpm: 3600
-#drivedata: 0 0 0 0 0
-#
-#7 partitions:
-##        size   offset    fstype   [fsize bsize]
-#  a: 204800 0  2.11BSD    1024 1024 	# (Cyl. 0 - 239*)
-#  b: 32768 204800  swap               	# (Cyl. 239*- 277*)
-#  c: 2339840 0  unused    1024 1024 	# (Cyl. 0 - 2736*)
-#  g: 2307072 237568  2.11BSD    1024 1024 	# (Cyl. 277*- 2976*)
-
-set label "MURGATROID"
-set ncyl 4570
-set disk_size [expr $ncyl * 512]
-set root_size 204800
-set swap_size 32768
-set g_start [expr $root_size + $swap_size]
-set g_size [expr $disk_size - $g_start]
-
+source config.tcl
+source lib.tcl
 
 spawn pdp11 simh.ini
 
 # 2.1.2. Step 2: creating the disk label
-expect "sim> "					{send "boot ts0\r"}
-expect ": "					{send "ts(0,1)\r"}
-expect "Disk? "					{send "ra(0,0)\r"}
-expect -ex {Proceed? [y/n] }			{send "y"}
+boot "ts0" "ts(0,1)"
+
+expect "Disk? "
+send "ra(0,0)\r"
+expect -ex {Proceed? [y/n] }
+send "y"
 
 expect "d(isplay) D(efault) m(odify) w(rite) q(uit)? "
 send "d"
 expect "d(isplay) D(efault) m(odify) w(rite) q(uit)? "
 send "D"
+expect "d(isplay) D(efault) m(odify) w(rite) q(uit)? "
+send "d"
 expect "d(isplay) D(efault) m(odify) w(rite) q(uit)? "
 send "m"
 expect "d(isplay) g(eometry) m(isc) p(artitions) q(uit)? "
@@ -76,20 +55,23 @@ proc mkpart {part offset size type} {
     expect "d(isplay) z(ero) t(ype) o(ffset) s(ize) f(rag) F(size) q(uit)? "
     send "q"
     expect "d(isplay) n(umber) s(elect) q(uit)? "
-    send "d"
-    expect "d(isplay) n(umber) s(elect) q(uit)? "
     send "q"
 }
 
-mkpart "a" 0 $root_size "2.11BSD"
-mkpart "b" $root_size $swap_size "swap"
-mkpart "c" 0 $disk_size "unused"
-mkpart "g" $g_start $g_size "2.11BSD"
+mkpart $root_part $root_start $root_size "2.11BSD"
+mkpart $swap_part $swap_start $swap_size "swap"
+mkpart $whole_part 0 $disk_size "unused"
+mkpart $usr_part $usr_start $usr_size "2.11BSD"
 
 expect "d(isplay) g(eometry) m(isc) p(artitions) q(uit)? "
 send "q"
 expect "d(isplay) D(efault) m(odify) w(rite) q(uit)? "
 send "w"
 expect "d(isplay) D(efault) m(odify) w(rite) q(uit)? "
+send "d"
+expect "d(isplay) D(efault) m(odify) w(rite) q(uit)? "
 send "q"
+expect ": "
 
+send ""
+expect "sim> "

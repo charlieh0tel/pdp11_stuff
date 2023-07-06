@@ -2,14 +2,14 @@
 
 set timeout -1
 
+source config.tcl
+source lib.tcl
+
 spawn pdp11 simh.ini
 
 # 2.1.2. Step 2: creating the disk label
-expect "sim> "
-send "boot ts0\r"
+boot "ts0" "ts(0,2)"
 
-expect ": "
-send "ts(0,2)\r"
 expect "file system: "
 send "ra(0,0)\r"
 expect ": "
