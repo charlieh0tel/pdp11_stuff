@@ -7,7 +7,7 @@ source lib.tcl
 
 spawn pdp11 simh.ini
 
-boot "ts0" "ra(0,0)unix"
+boot "ts0" "ra(0,0,0)unix"
 
 shell_cmd "dd if=/mdec/rauboot of=/dev/r$root_dev count=1"
 shell_cmd "sync"

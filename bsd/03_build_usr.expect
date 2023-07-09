@@ -7,7 +7,7 @@ source lib.tcl
 
 spawn pdp11 simh.ini
 
-boot "rq0" "ra(0,0)unix"
+boot "rq0" ""
 
 set yymmddhhmm [clock format [clock seconds] -format "%y%m%d%H%M"]
 shell_cmd "date $yymmddhhmm"
@@ -51,8 +51,15 @@ expect "0"
 shell_cmd "mount /dev/$usr_dev /usr"
 
 shell_cmd "cd /etc"
+
 shell_cmd "mv fstab fstab.old"
-write_file "/etc/fstab" "/dev/$root_dev       /       ufs     rw              1       1\r/dev/$swap_dev       none    swap    sw              0       0\r/dev/$usr_dev       /usr    ufs     rw              1       2\r"
+
+set fstab_1 "/dev/$root_dev		/	ufs	rw	1	1\r"
+set fstab_2 "/dev/$swap_dev_		none	swap	sw	0	0\r"
+set fstab_3 "/dev/$usr_dev		/usr	ufs	rw	1	2\r"
+append fstab $fstab_1 $fstab_2 $fstab_3
+write_file "/etc/fstab" "$fstab"
+
 shell_cmd "cat /etc/fstab"
 
 halt

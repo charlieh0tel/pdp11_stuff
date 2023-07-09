@@ -21,6 +21,10 @@ expect "d(isplay) D(efault) m(odify) w(rite) q(uit)? "
 send "D"
 expect "d(isplay) D(efault) m(odify) w(rite) q(uit)? "
 send "d"
+expect -re "  a: (\[0-9\]+) (\[0-9\]+)"
+set whole_size $expect_out(1,string)
+set zero $expect_out(2,string)
+
 expect "d(isplay) D(efault) m(odify) w(rite) q(uit)? "
 send "m"
 expect "d(isplay) g(eometry) m(isc) p(artitions) q(uit)? "
@@ -60,7 +64,7 @@ proc mkpart {part offset size type} {
 
 mkpart $root_part $root_start $root_size "2.11BSD"
 mkpart $swap_part $swap_start $swap_size "swap"
-mkpart $whole_part 0 $disk_size "unused"
+mkpart $whole_part 0 $whole_size "unused"
 mkpart $usr_part $usr_start $usr_size "2.11BSD"
 
 expect "d(isplay) g(eometry) m(isc) p(artitions) q(uit)? "
