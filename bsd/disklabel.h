@@ -36,6 +36,8 @@
 #ifndef	_SYS_DISKLABEL_H_
 #define	_SYS_DISKLABEL_H_
 
+#include <inttypes.h>
+
 /*
  * Disk description table, see disktab(5)
  */
@@ -53,7 +55,7 @@
 #define LABELSECTOR	1			/* sector containing label */
 #define LABELOFFSET	0			/* offset of label in sector */
 
-#define DISKMAGIC	((u_long) 0x82564557)	/* The disk magic number */
+#define DISKMAGIC	"V\x82WE"		/* The disk magic number */
 #define	MAXPARTITIONS	8
 
 /*
@@ -78,9 +80,9 @@ i * Almost all of the fields have been retained but with reduced sizes.  This
 */
 
 struct disklabel {
-	u_long	d_magic;		/* the magic number */
-	u_char	d_type;			/* drive type */
-	u_char	d_subtype;		/* controller/d_type specific */
+	char	d_magic[4];		/* the magic number */
+	uint8_t	d_type;			/* drive type */
+	uint8_t	d_subtype;		/* controller/d_type specific */
 	char	d_typename[16];		/* type name, e.g. "eagle" */
 	/* 
 	 * d_packname contains the pack identifier and is returned when
@@ -100,25 +102,25 @@ struct disklabel {
 #define d_boot0		d_un.un_d_boot0
 #endif	/* ! KERNEL or STANDALONE */
 			/* disk geometry: */
-	u_short	d_secsize;		/* # of bytes per sector */
-	u_short	d_nsectors;		/* # of data sectors per track */
-	u_short	d_ntracks;		/* # of tracks per cylinder */
-	u_short	d_ncylinders;		/* # of data cylinders per unit */
-	u_short	d_secpercyl;		/* # of data sectors per cylinder */
-	u_long	d_secperunit;		/* # of data sectors per unit */
+	uint16_t	d_secsize;		/* # of bytes per sector */
+	uint16_t	d_nsectors;		/* # of data sectors per track */
+	uint16_t	d_ntracks;		/* # of tracks per cylinder */
+	uint16_t	d_ncylinders;		/* # of data cylinders per unit */
+	uint16_t	d_secpercyl;		/* # of data sectors per cylinder */
+	uint32_t	d_secperunit;		/* # of data sectors per unit */
 	/*
 	 * Spares (bad sector replacements) below
 	 * are not counted in d_nsectors or d_secpercyl.
 	 * Spare sectors are assumed to be physical sectors
 	 * which occupy space at the end of each track and/or cylinder.
 	 */
-	u_short	d_sparespertrack;	/* # of spare sectors per track */
-	u_short	d_sparespercyl;		/* # of spare sectors per cylinder */
+	uint16_t	d_sparespertrack;	/* # of spare sectors per track */
+	uint16_t	d_sparespercyl;		/* # of spare sectors per cylinder */
 	/*
 	 * Alternate cylinders include maintenance, replacement,
 	 * configuration description areas, etc.
 	 */
-	u_short	d_acylinders;		/* # of alt. cylinders per unit */
+	uint16_t	d_acylinders;		/* # of alt. cylinders per unit */
 
 			/* hardware characteristics: */
 	/*
@@ -137,32 +139,32 @@ struct disklabel {
 	 * Finally, d_cylskew is the offset of sector 0 on cylinder N
 	 * relative to sector 0 on cylinder N-1.
 	 */
-	u_short	d_rpm;			/* rotational speed */
-	u_char	d_interleave;		/* hardware sector interleave */
-	u_char	d_trackskew;		/* sector 0 skew, per track */
-	u_char	d_cylskew;		/* sector 0 skew, per cylinder */
-	u_char	d_headswitch;		/* head swith time, usec */
-	u_short	d_trkseek;		/* track-to-track seek, msec */
-	u_short	d_flags;		/* generic flags */
+	uint16_t	d_rpm;			/* rotational speed */
+	uint8_t	d_interleave;		/* hardware sector interleave */
+	uint8_t	d_trackskew;		/* sector 0 skew, per track */
+	uint8_t	d_cylskew;		/* sector 0 skew, per cylinder */
+	uint8_t	d_headswitch;		/* head swith time, usec */
+	uint16_t	d_trkseek;		/* track-to-track seek, msec */
+	uint16_t	d_flags;		/* generic flags */
 #define NDDATA 5
-	u_long	d_drivedata[NDDATA];	/* drive-type specific information */
+	uint32_t	d_drivedata[NDDATA];	/* drive-type specific information */
 #define NSPARE 5
-	u_long	d_spare[NSPARE];	/* reserved for future use */
-	u_long	d_magic2;		/* the magic number (again) */
-	u_short	d_checksum;		/* xor of data incl. partitions */
+	uint32_t	d_spare[NSPARE];	/* reserved for future use */
+	char	d_magic2[4];		/* the magic number (again) */
+	uint16_t	d_checksum;		/* xor of data incl. partitions */
 
 			/* filesystem and partition information: */
-	u_short	d_npartitions;		/* number of partitions in following */
-	u_short	d_bbsize;		/* size of boot area at sn0, bytes */
-	u_short	d_sbsize;		/* max size of fs superblock, bytes */
+	uint16_t	d_npartitions;		/* number of partitions in following */
+	uint16_t	d_bbsize;		/* size of boot area at sn0, bytes */
+	uint16_t	d_sbsize;		/* max size of fs superblock, bytes */
 	struct	partition {		/* the partition table */
-		u_long	p_size;		/* number of sectors in partition */
-		u_long	p_offset;	/* starting sector */
-		u_short	p_fsize;	/* filesystem basic fragment size */
-		u_char	p_fstype;	/* filesystem type, see below */
-		u_char	p_frag;		/* filesystem fragments per block */
+		uint32_t	p_size;		/* number of sectors in partition */
+		uint32_t	p_offset;	/* starting sector */
+		uint16_t	p_fsize;	/* filesystem basic fragment size */
+		uint8_t	p_fstype;	/* filesystem type, see below */
+		uint8_t	p_frag;		/* filesystem fragments per block */
 	} d_partitions[MAXPARTITIONS];	/* actually may be more */
-};
+}  __attribute__((packed));   /* Unclear if this will work  on architectures that require 32-bit aligned accesses. */
 
 /* d_type values: */
 #define	DTYPE_SMD		1		/* SMD, XSMD; VAX hp/up */
@@ -174,7 +176,7 @@ struct disklabel {
 #define	DTYPE_FLOPPY		7		/* floppy */
 
 #ifdef DKTYPENAMES
-static char *dktypenames[] = {
+static const char *dktypenames[] = {
 	"unknown",
 	"SMD",
 	"MSCP",
@@ -213,7 +215,7 @@ static char *dktypenames[] = {
 #define	FS_ISO9660	12		/* ISO 9660, normally CD-ROM */
 
 #ifdef	DKTYPENAMES
-static char *fstypenames[] = {
+static const char *fstypenames[] = {
 	"unused",
 	"swap",
 	"Version 6",
