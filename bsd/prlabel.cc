@@ -228,9 +228,3 @@ int main(int argc, char **argv) {
     
   }
 }
-
-
-
-// Local Variables:
-// compile-command: "c++ -Wall -o prlabel prlabel.cc"
-// End:
