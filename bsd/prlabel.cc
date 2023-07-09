@@ -133,6 +133,18 @@ std::string convert_fstype(uint8_t fstype) {
 }
 
 
+uint16_t dkcksum(const struct disklabel *lp)
+{
+  auto start = reinterpret_cast<const uint8_t *>(lp);
+  auto end = reinterpret_cast<const uint8_t *>(&lp->d_partitions[lp->d_npartitions]);
+
+  uint16_t sum = 0;
+  while (start < end)
+    sum ^= *start++;
+  return sum;
+}
+
+
 int main(int argc, char **argv) {
   argv0 = argv[0];
   
@@ -166,8 +178,6 @@ int main(int argc, char **argv) {
     std::cerr << Dump(disklabel, sizeof(*disklabel));
     Fail(EX_DATAERR, "d_magic2 not matched");
   }
-
-  // TODO(): Check the checksum.
 
   const auto d_type = boost::endian::little_to_native(disklabel->d_type);
   std::cout << "d_type=" << convert_d_type(d_type) << std::endl;
@@ -217,6 +227,12 @@ int main(int argc, char **argv) {
   if (d_npartitions > MAXPARTITIONS) {
     std::cout << "* illegal number of partitions; clamping to " << MAXPARTITIONS << std::endl;
     d_npartitions = MAXPARTITIONS;
+  }
+
+  const auto checksum = dkcksum(disklabel);
+  if (checksum) {
+    std::cout << std::hex << "checksum=" << std::hex << checksum << std::endl;
+    std::cerr << "Partition checksum is bad." << std::endl;
   }
 
   for (int i=0; i < d_npartitions; ++i) {
