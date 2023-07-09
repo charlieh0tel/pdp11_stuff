@@ -176,7 +176,7 @@ int main(int argc, char **argv) {
   std::cout << std::endl;
 
   std::cout << "d_typename=" << disklabel->d_typename << std::endl;
-  std::cout << "d_un.un_d_packname=" << disklabel->d_un.un_d_packname << std::endl;
+  std::cout << "d_un.un_d_packname=\"" << disklabel->d_un.un_d_packname << "\"" <<  std::endl;
   std::cout << std::endl;
 
   std::cout << "d_secsize=" << boost::endian::little_to_native(disklabel->d_secsize) << std::endl;
