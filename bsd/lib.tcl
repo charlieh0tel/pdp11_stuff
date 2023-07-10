@@ -34,7 +34,7 @@ proc read_local_file {path} {
 }
 
 proc write_file {path contents user group mode} {
-    shell_cmd "\[ -e  \"$path\" \] && cp -p \"$path\" \"$path.orig\""
+    shell_cmd "\[ -e  \"$path\" \] && cp -p \"$path\" \"$path.orig\" || :;"
     expect "# "
     send "cat >\"$path\" <<EOF\r"
     expect "> "
@@ -47,7 +47,7 @@ proc write_file {path contents user group mode} {
 }
 
 proc copy_local_file {local_path remote_path user group mode} {
-    shell_cmd "\[ -e  \"$remote_path\" \] && cp -p \"$remote_path\" \"$remote_path.orig\""
+    shell_cmd "\[ -e  \"$remote_path\" \] && cp -p \"$remote_path\" \"$remote_path.orig\" || :;"
 
     set uuencoded [exec /usr/bin/uuencode $local_path /dev/stdout]
     expect "# "
