@@ -1,0 +1,26 @@
+#!/usr/bin/expect 
+
+set timeout -1
+
+source config.tcl
+source lib.tcl
+
+spawn pdp11 simh.ini
+
+boot "rq0" ""
+
+expect "# "
+send "\004"
+
+expect "login: "
+send "root\r"
+
+shell_cmd "cd /usr/src"
+shell_cmd "mt rew"
+shell_cmd "mt fsf 8"
+shell_cmd "tar xpbf 20 /dev/rmt12"
+
+shell_cmd "sync"
+
+halt
+

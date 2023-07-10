@@ -1,4 +1,4 @@
-#!/bin/bash
+g#!/bin/bash
 
 set -o errexit
 set -o xtrace
@@ -12,7 +12,8 @@ else
     ./01_build_root.expect
     ./02_bootstrap_disk.expect
     ./03_build_usr.expect
-    ./04_kernel.expect
-    cp -p "${DISK}" "${DISK}.post-04-snap"
+    ./04_usr_src.expect
+    ./05_kernel.expect
+   cp -p "${DISK}" "${DISK}.post-04-snap"
 fi
-./05_customize.expect
+./06_customize.expect
