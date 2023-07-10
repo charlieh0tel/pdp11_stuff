@@ -241,6 +241,5 @@ int main(int argc, char **argv) {
     std::cout << "  p_size=" << boost::endian::little_to_native(disklabel->d_partitions[i].p_size) << std::endl;
     std::cout << "  p_offset=" << boost::endian::little_to_native(disklabel->d_partitions[i].p_offset) << std::endl;
     std::cout << "  p_fsize=" << boost::endian::little_to_native(disklabel->d_partitions[i].p_fsize) << std::endl;
-    
   }
 }

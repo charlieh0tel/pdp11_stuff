@@ -21,7 +21,8 @@ shell_cmd "mount /dev/$usr_dev /usr"
 shell_cmd "cd /dev"
 shell_cmd "rm *mt*"
 shell_cmd "./MAKEDEV ts0"
-shell_cmd "sync"
+shell_cmd "rm -f swap"
+shell_cmd "ln /dev/ra0b swap"
 
 shell_cmd "cd /usr"
 shell_cmd "mt rew"
@@ -55,11 +56,13 @@ shell_cmd "cd /etc"
 shell_cmd "mv fstab fstab.old"
 
 set fstab_1 "/dev/$root_dev		/	ufs	rw	1	1\r"
-set fstab_2 "/dev/$swap_dev_		none	swap	sw	0	0\r"
+set fstab_2 "/dev/$swap_dev		none	swap	sw	0	0\r"
 set fstab_3 "/dev/$usr_dev		/usr	ufs	rw	1	2\r"
 append fstab $fstab_1 $fstab_2 $fstab_3
-write_file "/etc/fstab" "$fstab"
+write_file "/etc/fstab" "$fstab" root wheel 0644
 
 shell_cmd "cat /etc/fstab"
+
+shell_cmd "sync"
 
 halt
