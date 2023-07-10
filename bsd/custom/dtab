@@ -32,7 +32,7 @@ ra	? 172150 154	5	raintr		# uda50, rqdx1/2/3
 # assigning unit numbers starting at 0 which will effectively move your
 # console to that first line.  Start your unit numbers with '1'.
 #
-#cn	1 176500 300	5	cnrint	cnxint	# kl/dl-11 (on mvx11-aa)
+cn	1 176500 300	5	cnrint	cnxint	# kl/dl-11 (on mvx11-aa)
 
 # The following entries are provided for information only, actual
 # configuration is done elsewhere.
