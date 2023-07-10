@@ -28,6 +28,17 @@ shell_cmd "make"
 shell_cmd "cp -p /unix /oldunix"
 shell_cmd "make install"
 
+copy_local_file "./custom/MAKEDEV.local" "/dev/MAKEDEV.local" root wheel 0555
+shell_cmd "cd /dev"
+shell_cmd "ls -lg >/tmp/before"
+shell_cmd "./MAKEDEV std"
+shell_cmd "./MAKEDEV pty"
+shell_cmd "./MAKEDEV local"
+shell_cmd "ls -lg >/tmp/after"
+shell_cmd "diff /tmp/before /tmp/after"
+
+copy_local_file "./custom/dtab" "/etc/dtab" root wheel 0644
+
 shell_cmd "sync"
 
 halt

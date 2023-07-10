@@ -15,7 +15,7 @@ send "\004"
 expect "login: "
 send "root\r"
 
-# Some cleanup.  Not sure why this is needed.
+# Some cleanup.  Not sure why this stuff is around.
 shell_cmd "rm -f /*.core"
 shell_cmd "rm /disklabel"
 shell_cmd "rm /toyset"
@@ -26,9 +26,11 @@ copy_local_file "./custom/hosts" "/etc/hosts" root wheel 0644
 copy_local_file "./custom/netstart" "/etc/netstart" root wheel 0644
 copy_local_file "./custom/ntp.conf" "/etc/ntp.conf" root wheel 0644
 copy_local_file "./custom/resolv.conf" "/etc/resolv.conf" root wheel 0644
+write_file "/etc/hosts.allow" "ALL: LOCAL .murgatroid.com\r" root wheel 0644
 
-# Devices
-copy_local_file "./custom/dtab" "/etc/dtab" root wheel 0644
+# 
+copy_local_file "./custom/ttys" "/etc/ttys" root wheel 0644
+
+shell_cmd "sync"
 
 halt
-
