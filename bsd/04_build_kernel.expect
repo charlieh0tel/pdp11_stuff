@@ -1,0 +1,34 @@
+#!/usr/bin/expect 
+
+set timeout -1
+
+source config.tcl
+source lib.tcl
+
+spawn pdp11 simh.ini
+
+boot "rq0" ""
+
+expect "# "
+send "\004"
+
+expect "login: "
+send "root\r"
+
+# Kernel
+copy_local_file "./custom/MURGATROID" "/sys/conf/MURGATROID" root wheel 0644
+
+shell_cmd "cd /sys/conf"
+shell_cmd "./config MURGATROID"
+
+shell_cmd "cd ../MURGATROID"
+copy_local_file "./custom/MURGATROID.Makefile" "Makefile" root wheel 0644
+shell_cmd "make"
+
+shell_cmd "cp -p /unix /oldunix"
+shell_cmd "make install"
+
+shell_cmd "sync"
+
+halt
+

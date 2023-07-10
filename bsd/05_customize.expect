@@ -1,0 +1,32 @@
+#!/usr/bin/expect 
+
+set timeout -1
+
+source config.tcl
+source lib.tcl
+
+spawn pdp11 simh.ini
+
+boot "rq0" ""
+
+expect "# "
+send "\004"
+
+expect "login: "
+send "root\r"
+
+# Some cleanup.  Not sure why this is needed.
+shell_cmd "rm -f /*.core"
+shell_cmd "rm /disklabel"
+shell_cmd "rm /toyset"
+shell_cmd "rm /etc/dtab.save"
+
+# Networking.
+copy_local_file "./custom/hosts" "/etc/hosts" root wheel 0644
+copy_local_file "./custom/netstart" "/etc/netstart" root wheel 0644
+
+# Devices
+copy_local_file "./custom/dtab" "/etc/dtab" root wheel 0644
+
+halt
+
