@@ -53,7 +53,7 @@ shell_cmd "mount /dev/$usr_dev /usr"
 
 shell_cmd "cd /etc"
 
-shell_cmd "mv fstab fstab.old"
+shell_cmd "mv fstab fstab.orig"
 
 set fstab_1 "/dev/$root_dev		/	ufs	rw	1	1\r"
 set fstab_2 "/dev/$swap_dev		none	swap	sw	0	0\r"
