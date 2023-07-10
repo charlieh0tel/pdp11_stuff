@@ -1,0 +1,4 @@
+rm -f swap
+ln ra0b swap
+chgrp kmem swap
+chmod 640 swap
