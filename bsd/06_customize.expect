@@ -17,6 +17,10 @@ shell_cmd "rm /disklabel"
 shell_cmd "rm /toyset"
 shell_cmd "rm /etc/dtab.save"
 
+# rc
+copy_local_file "./custom/rc" "/etc/rc" root wheel 0644
+copy_local_file "./custom/rc.local" "/etc/rc.local" root wheel 0755
+
 # Networking.
 copy_local_file "./custom/hosts" "/etc/hosts" root wheel 0644
 copy_local_file "./custom/networks" "/etc/networks" root wheel 0644
@@ -25,7 +29,7 @@ copy_local_file "./custom/ntp.conf" "/etc/ntp.conf" root wheel 0644
 copy_local_file "./custom/resolv.conf" "/etc/resolv.conf" root wheel 0644
 write_file "/etc/hosts.allow" "ALL: LOCAL .murgatroid.com\r" root wheel 0644
 
-# 
+# Serial.
 copy_local_file "./custom/ttys" "/etc/ttys" root wheel 0644
 
 shell_cmd "sync"
