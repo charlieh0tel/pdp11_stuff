@@ -93,7 +93,7 @@ NXPC		0		# NXPD controllers (RH70/RH11 style)
 NXPD		0		# RM02/03/05, RP04/05/06, CDC 9766,
 				# Ampex 9300, Diva, Fuji 160, SI Eagle.
 
-NRAM		0		# RAM disk size (512-byte blocks)
+NRAM		128		# RAM disk size (512-byte blocks)
 
 #########################################
 # PERIPHERALS: TAPE DRIVES		#
