@@ -9,10 +9,10 @@ spawn pdp11 simh.ini
 
 boot "rq0" ""
 
-set yymmddhhmm [clock format [clock seconds] -format "%y%m%d%H%M"]
-shell_cmd "date $yymmddhhmm"
+set_hostname
 
-shell_cmd "hostname $hostname"
+# rc=2 because failure to write wtmp
+set_clock no
 
 shell_cmd "newfs $usr_dev"
 
@@ -24,11 +24,13 @@ shell_cmd "./MAKEDEV ts0"
 shell_cmd "rm -f swap"
 shell_cmd "ln /dev/ra0b swap"
 
+# /usr
 shell_cmd "cd /usr"
 shell_cmd "mt rew"
 shell_cmd "mt fsf 6"
 shell_cmd "tar xpbf 20 /dev/rmt12"
 
+# Kernel sources.
 shell_cmd "mkdir src"
 shell_cmd "cd src"
 shell_cmd "mt -f /dev/rmt12 fsf"
@@ -52,8 +54,6 @@ expect "0"
 shell_cmd "mount /dev/$usr_dev /usr"
 
 shell_cmd "cd /etc"
-
-shell_cmd "mv fstab fstab.orig"
 
 set fstab_1 "/dev/$root_dev		/	ufs	rw	1	1\r"
 set fstab_2 "/dev/$swap_dev		none	swap	sw	0	0\r"

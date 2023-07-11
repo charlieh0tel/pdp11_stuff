@@ -12,12 +12,14 @@ proc halt {} {
     expect "sim> "
 }
 
-proc shell_cmd {cmd} {
+proc shell_cmd {cmd {check_error true}} {
     expect "# "
     send "$cmd\r"
-    expect "# "
-    send "echo \$?\r"
-    expect "0"
+    if {$check_error == true} {
+	expect "# "
+	send "echo \$?\r"
+	expect "0\r"
+    }
 }
 
 proc fix_file {path user group mode} {
@@ -57,3 +59,23 @@ proc copy_local_file {local_path remote_path user group mode} {
     fix_file $remote_path $user $group $mode
 }
 
+proc boot_to_multiuser {} {
+    boot "rq0" ""
+
+    expect "# "
+    send "\004"
+
+    expect "login: "
+    send "root\r"
+}
+
+
+proc set_clock {{check_error true}} {
+    set yymmddhhmm [clock format [clock seconds] -format "%y%m%d%H%M" -gmt true]
+    shell_cmd "date -n -u $yymmddhhmm" $check_error
+}
+
+proc set_hostname {} {
+    upvar hostname my_hostname
+    shell_cmd "hostname $my_hostname"
+}

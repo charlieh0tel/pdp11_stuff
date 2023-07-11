@@ -6,7 +6,7 @@
 LINEHZ		50			# clock frequency European
 #LINEHZ		60			# clock frequency USA
 
-PDP11		73			# PDP-11/73,53,83,93,84,94
+PDP11		53			# PDP-11/73,53,83,93,84,94
 
 #########################################
 # GENERAL SYSTEM PARAMETERS		#
@@ -30,8 +30,8 @@ SWAPDEV		makedev(5,1)		# ra0b
 
 # DUMPROUTINE indicates which dump routine should be used.
 DUMPLO		512			# dump start address
-DUMPDEV		NODEV
-DUMPROUTINE	nulldev
+DUMPDEV		makedev(5,2)		# ra0b
+DUMPROUTINE	radump
 
 #########################################
 # KERNEL CONFIGURATION			#

@@ -7,13 +7,9 @@ source lib.tcl
 
 spawn pdp11 simh.ini
 
-boot "rq0" ""
-
-expect "# "
-send "\004"
-
-expect "login: "
-send "root\r"
+boot_to_multiuser
+set_hostname
+set_clock
 
 # Kernel
 copy_local_file "./custom/MURGATROID" "/sys/conf/MURGATROID" root wheel 0644

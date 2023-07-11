@@ -1,5 +1,5 @@
 set label "MURGATROID"
-set hostname "pdp1153"
+set hostname "pdp1153.murgatroid.com"
 
 set ncyl 3099
 set sec_per_cyl 949

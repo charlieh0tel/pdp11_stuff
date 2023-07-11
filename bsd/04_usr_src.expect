@@ -7,13 +7,9 @@ source lib.tcl
 
 spawn pdp11 simh.ini
 
-boot "rq0" ""
-
-expect "# "
-send "\004"
-
-expect "login: "
-send "root\r"
+boot_to_multiuser
+set_hostname
+set_clock
 
 shell_cmd "cd /usr/src"
 shell_cmd "mt rew"
