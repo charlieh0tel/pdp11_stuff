@@ -1,8 +1,11 @@
 set label "MURGATROID"
 set hostname "pdp1153.murgatroid.com"
 
+# RA92
+set disk_image "2.11BSD_patch457-root.ra92"
 set ncyl 3099
-set sec_per_cyl 949
+set sec_per_cyl 949;		# 73 * 13
+set disk_size_bytes [expr $ncyl * $sec_per_cyl * 512]
 
 set root_disk_type "ra"
 set root_disk_no 0
@@ -21,7 +24,7 @@ set swap_size [expr 35 * $sec_per_cyl]
 set usr_part "d"
 set usr_dev "$root_disk$usr_part"
 set usr_start [expr $root_size + $swap_size]
-set usr_size [expr 2848 * $sec_per_cyl]
+set usr_size [expr 2849 * $sec_per_cyl]
 
 set whole_part "c"
 set whole_dev "$root_disk$whole_part"

@@ -5,6 +5,9 @@ set timeout -1
 source config.tcl
 source lib.tcl
 
+exec touch $disk_image
+exec fallocate -z  -l $disk_size_bytes $disk_image
+
 spawn pdp11 simh.ini
 
 # 2.1.2. Step 2: creating the disk label
