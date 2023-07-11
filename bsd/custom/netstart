@@ -17,7 +17,7 @@ routedflags=NO
 rwhod=YES
 named=NO
 
-hostname=pdp1153.murgatroid.com
+hostname=pdp1153
 netmask=255.255.0.0
 broadcast=10.0.255.255
 default=10.0.0.254
