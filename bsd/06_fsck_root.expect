@@ -14,6 +14,7 @@ set_hostname
 # rc=2 because failure to write wtmp
 set_clock no
 
-shell_cmd "fsck /dev/r$root_dev"
+# may return non-zero status.
+shell_cmd "fsck /dev/$root_dev" no
 
 halt
