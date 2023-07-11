@@ -6,10 +6,9 @@ tail +2 /etc/motd >>/tmp/t1
 mv /tmp/t1 /etc/motd
 chmod 644 /etc/motd
 
-echo -n "setting time via ntp" >/dev/console
+echo "setting time via ntp" >/dev/console
 ntp -s -f chronos >/dev/console 2>&1
-echo "." >/dev/console
 
-echo -n "starting ntpd " >/dev/console
+echo -n "starting ntpd" >/dev/console
 ntpd >/dev/console 2>&1
 echo "." >/dev/console
