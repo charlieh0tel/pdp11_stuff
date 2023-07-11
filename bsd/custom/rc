@@ -10,7 +10,7 @@ PATH=/bin:/sbin:/usr/sbin:/usr/ucb:/usr/bin; export PATH
 # ownership and modes below after the standard file systems have been
 # mounted.
 #
-RAMSIZE=64
+RAMSIZE=0
 RAMFS=/tmp
 RAMOWNER=root
 RAMGROUP=wheel
@@ -19,7 +19,6 @@ RAMMODE=1777
 if [ ${RAMSIZE} != 0 ]
 then
 	mkfs -s ${RAMSIZE} /dev/ram
-	mount /dev/ram /tmp
 fi
 
 if [ "$2" = powerfail ]
