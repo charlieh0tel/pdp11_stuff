@@ -24,9 +24,6 @@ expect "d(isplay) D(efault) m(odify) w(rite) q(uit)? "
 send "D"
 expect "d(isplay) D(efault) m(odify) w(rite) q(uit)? "
 send "d"
-expect -re "  a: (\[0-9\]+) (\[0-9\]+)"
-set whole_size $expect_out(1,string)
-set zero $expect_out(2,string)
 
 expect "d(isplay) D(efault) m(odify) w(rite) q(uit)? "
 send "m"
