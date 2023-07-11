@@ -1,4 +1,4 @@
-#! /bin/sh -
+#!/bin/sh
 # site-specific startup actions, daemons
 
 sysctl -n kern.version | head -1 > /tmp/t1
