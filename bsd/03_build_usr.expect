@@ -44,7 +44,7 @@ shell_cmd "ln -s /usr/src/sys sys"
 shell_cmd "umount /dev/$usr_dev"
 
 expect "# "
-send "fsck /dev/$usr_dev\r"
+send "fsck /dev/r$usr_dev\r"
 expect "ENTER FILENAME: "
 send "/tmp/usrfsck\r"
 expect "# "
