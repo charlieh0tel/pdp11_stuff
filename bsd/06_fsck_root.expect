@@ -1,0 +1,19 @@
+#!/usr/bin/expect 
+
+set timeout -1
+
+source config.tcl
+source lib.tcl
+
+spawn pdp11 simh.ini
+
+boot "rq0" ""
+
+set_hostname
+
+# rc=2 because failure to write wtmp
+set_clock no
+
+shell_cmd "fsck /dev/r$root_dev"
+
+halt

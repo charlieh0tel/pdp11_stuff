@@ -5,8 +5,8 @@ set -o xtrace
 
 DISK="2.11BSD_patch457-root.ra92"
 
-if [ -e "${DISK}.post-05-snap" ]; then
-    cp -p "${DISK}.post-05-snap" "${DISK}"
+if [ -e "${DISK}.post-06-snap" ]; then
+    cp -p "${DISK}.post-06-snap" "${DISK}"
 else
     rm -f "${DISK}"
     ./00_build_disk.expect
@@ -15,6 +15,7 @@ else
     ./03_build_usr.expect
     ./04_usr_src.expect
     ./05_kernel.expect
-   cp -p "${DISK}" "${DISK}.post-05-snap"
+    ./06_fsck_root.expect	# prolly should go earlier
+   cp -p "${DISK}" "${DISK}.post-06-snap"
 fi
-./06_customize.expect
+./07_customize.expect
