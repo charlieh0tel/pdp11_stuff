@@ -13,9 +13,9 @@ else
     ./01_build_root.expect
     ./02_bootstrap_disk.expect
     ./03_build_usr.expect
-    ./04_usr_src.expect
-    ./05_kernel.expect
-    ./06_fsck_root.expect	# prolly should go earlier
-   cp -p "${DISK}" "${DISK}.post-06-snap"
+    ./04_fsck_root.expect
+    ./05_usr_src.expect
+    ./06_kernel.expect
+    cp -p "${DISK}" "${DISK}.post-06-snap"
 fi
 ./07_customize.expect
