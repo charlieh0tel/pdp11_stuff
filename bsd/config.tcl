@@ -20,7 +20,7 @@ set root_size [expr $root_ncyl * $sec_per_cyl]
 set swap_part "b"
 set swap_dev "$root_disk$swap_part"
 set swap_start $root_size
-set swap_ncyl 25
+set swap_ncyl 9
 set swap_size [expr $swap_ncyl * $sec_per_cyl]
 
 set usr_part "d"
