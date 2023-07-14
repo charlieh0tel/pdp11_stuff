@@ -30,8 +30,9 @@ shell_cmd "ls -lg >/tmp/before"
 shell_cmd "./MAKEDEV std"
 shell_cmd "./MAKEDEV pty"
 shell_cmd "./MAKEDEV local"
+shell_cmd "./MAKEDEV lp0"
 shell_cmd "ls -lg >/tmp/after"
-shell_cmd "diff /tmp/before /tmp/after"
+shell_cmd "diff /tmp/before /tmp/after" no
 
 copy_local_file "./custom/dtab" "/etc/dtab" root wheel 0644
 
