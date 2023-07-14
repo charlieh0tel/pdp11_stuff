@@ -1,0 +1,3 @@
+mkhosts?
+sendmail?
+/tmp partition?
