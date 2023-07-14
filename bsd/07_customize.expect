@@ -27,7 +27,9 @@ copy_local_file "./custom/networks" "/etc/networks" root wheel 0644
 copy_local_file "./custom/netstart" "/etc/netstart" root wheel 0644
 copy_local_file "./custom/ntp.conf" "/etc/ntp.conf" root wheel 0644
 copy_local_file "./custom/resolv.conf" "/etc/resolv.conf" root wheel 0644
-write_file "/etc/hosts.allow" "ALL: LOCAL .murgatroid.com\r" root wheel 0644
+shell_cmd "mv /etc/inetd.conf /etc/inetd.conf.wrappers"
+shell_cmd "mv /etc/inetd.conf.nowrappers /etc/inetd.conf"
+write_file "/etc/hosts.equiv" "" root wheel 0600
 
 # Serial.
 copy_local_file "./custom/ttys" "/etc/ttys" root wheel 0644
