@@ -1,53 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <inttypes.h>
-
-uint16_t checksum(uint8_t *data, size_t size) {
-  uint16_t sum = 0;
-
-  for (size_t i = 0; i < size; i++) {
-    sum += data[i];
-  }
-
-  return sum;
-}
+#include <fcntl.h>
 
 int main(int argc, char **argv) {
-  if (argc != 2) {
+  int fd = 0;
+  switch (argc) {
+  case 1:
+    break;
+  case 2:
+    fd = open(argv[1], O_RDONLY);
+    if (fd < 0) {
+      fprintf(stderr, "open: %m\n");
+      exit(1);
+    }
+    break;
+  default:
     fprintf(stderr, "usage: %s file\n", argv[0]);
     exit(1);
   }
 
-  int fd = open(argv[1], O_RDONLY);
-  if (fd < 0) {
-    fprintf(stderr, "open: %m\n");
-    exit(1);
+  uint16_t sum = 0;
+  while (1) {
+    uint8_t cc;
+    int nr = read(fd, &cc, 1);
+    if (nr == 0) {
+      break;
+    }
+    if (nr != 1) {
+      fprintf(stderr, "read failed: %m\n");
+      exit(1);
+    }
+
+    sum += cc;
   }
 
-  struct stat stat;
-  int rc = fstat(fd, &stat);
-  if (fd < 0) {
-    fprintf(stderr, "stat failed: %m\n");
-    exit(1);
-  }
-
-  uint8_t *buf = malloc(stat.st_size);
-  ssize_t nr = read(fd, buf, stat.st_size);
-  if (nr < 0) {
-    fprintf(stderr, "read failed: %m\n");
-    exit(1);
-  }
-  if (nr != stat.st_size) {
-    fprintf(stderr, "failed to read all the bytes\n");
-    exit(1);
-  }
-
-  uint16_t cs = checksum(buf, nr);
-  printf("%04x\n", cs);
-
-  return 0;
+  printf("%04x\n", sum);
 }
