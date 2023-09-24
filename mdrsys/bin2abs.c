@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
 
   while (1) {
     if (load_address > 0xffff) {
-      fprintf(stderr, "%s: load address to large\n", argv[0]);
+      fprintf(stderr, "%s: load address too large\n", argv[0]);
       exit(0);
     }
 
