@@ -5,6 +5,21 @@ program for Weirton Steel Company.
 The checksums match the labels on the chips; they are believed to be
 good.
 
+
+Running
+-------
+
+You can run this under simh:
+
+% make
+% pdp11 mdrsys.ini
+
+It does not currently respond to input.
+
+
+Details
+-------
+
 The chips (Intel D2732A, 4K x 8bit) were installed in sockets XE41/42,
 XE35/36, XE29/30, XE23/24.
 
