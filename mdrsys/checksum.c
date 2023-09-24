@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
     }
     break;
   default:
-    fprintf(stderr, "usage: %s file\n", argv[0]);
+    fprintf(stderr, "usage: %s [file]\n", argv[0]);
     exit(1);
   }
 
