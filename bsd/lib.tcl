@@ -35,8 +35,12 @@ proc read_local_file {path} {
     return $contents
 }
 
+proc maybe_backup_file {path} {
+    shell_cmd "\[ -e  \"$path\" -a \! -e \"$path.orig\" \] && cp -p \"$path\" \"$path.orig\" || :;"
+}
+
 proc write_file {path contents user group mode} {
-    shell_cmd "\[ -e  \"$path\" \] && cp -p \"$path\" \"$path.orig\" || :;"
+    maybe_backup_file $path
     expect "# "
     send "cat >\"$path\" <<EOF\r"
     expect "> "
@@ -48,9 +52,15 @@ proc write_file {path contents user group mode} {
     fix_file $path $user $group $mode
 }
 
-proc copy_local_file {local_path remote_path user group mode} {
-    shell_cmd "\[ -e  \"$remote_path\" \] && cp -p \"$remote_path\" \"$remote_path.orig\" || :;"
+proc append_line {path line user group mode} {
+    maybe_backup_file $path
+    shell_cmd "touch \"$path\""
+    shell_cmd("echo \'$line\' >> \"$path\"")
+    fix_file $path $user $group $mode
+}
 
+proc copy_local_file {local_path remote_path user group mode} {
+    maybe_backup_file $remote_path
     set uuencoded [exec /usr/bin/uuencode $local_path /dev/stdout]
     expect "# "
     send "uudecode > \"${remote_path}\"\r"

@@ -34,6 +34,12 @@ write_file "/etc/hosts.equiv" "" root wheel 0600
 # Serial.
 copy_local_file "./custom/ttys" "/etc/ttys" root wheel 0644
 
+# Users
+append_line "ch::100:10::0:0:Christopher Hoover,,,:/usr/ch:/bin/sh" /etc/passwd 
+root whell 0644
+sh_cmd "mkdir /usr/ch"
+sh_cmd "chown ch /usr/ch"
+
 shell_cmd "sync"
 
 halt

@@ -21,7 +21,8 @@ shell_cmd "cd ../MURGATROID"
 copy_local_file "./custom/MURGATROID.Makefile" "Makefile" root wheel 0644
 shell_cmd "make"
 
-shell_cmd "cp -p /unix /oldunix"
+# Make sure we keep the GENERIC kernel around.
+shell_cmd "cp -p /unix /genunix"
 shell_cmd "make install"
 
 copy_local_file "./custom/MAKEDEV.local" "/dev/MAKEDEV.local" root wheel 0555
