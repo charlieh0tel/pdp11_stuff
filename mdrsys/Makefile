@@ -1,7 +1,11 @@
-CFLAGS=-Wall -Werror
+CFLAGS:=-Wall -Werror
+LOAD_ADDRESS:=0100000
 
-all: mdrsys_le16.bin checksum
+all: mdrsys.abs checksum
 .PHONY: clean
+
+mdrsys.abs: mdrsys_le16.bin bin2abs
+	./bin2abs $(LOAD_ADDRESS) mdrsys_le16.bin > $@
 
 mdrsys_le16.bin: r4_19_apr_83_le16.bin r5_19_apr_83_le16.bin r6_19_apr_83_le16.bin
 	cat $^ > $@
@@ -19,9 +23,14 @@ combine: combine.c
 
 checksum: checksum.c
 
+bin2abs: bin2abs.c
+
 clean:
-	rm -f mdrsys_le16.bin r4_19_apr_83_le16.bin r5_19_apr_83_le16.bin r6_19_apr_83_le16.bin
-	rm -f combine checksum
+	rm -f mdrsys_le16.bin mdrsys.abs
+	rm -f r4_19_apr_83_le16.bin
+	rm -f r5_19_apr_83_le16.bin
+	rm -f r6_19_apr_83_le16.bin mdrsys.abs
+	rm -f combine checksum bin2abs
 
 .PHONY: clean
 
