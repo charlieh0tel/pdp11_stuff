@@ -1,9 +1,10 @@
+CFLAGS=-Wall -Werror
+
 all: mdrsys_le16.bin checksum
 .PHONY: clean
 
 mdrsys_le16.bin: r4_19_apr_83_le16.bin r5_19_apr_83_le16.bin r6_19_apr_83_le16.bin
 	cat $^ > $@
-
 
 r4_19_apr_83_le16.bin: combine r4l_19_apr_83_cs3103.bin r4h_19_apr_83_cs89e5.bin
 	./combine r4l_19_apr_83_cs3103.bin r4h_19_apr_83_cs89e5.bin > $@
