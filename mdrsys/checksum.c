@@ -38,8 +38,3 @@ int main(int argc, char **argv) {
 
   printf("%04x\n", sum);
 }
-
-
-/* Local Variables: */
-/* compile-command: "cc -Wall -o checksum checksum.c" */
-/* End: */

@@ -91,7 +91,3 @@ int main(int argc, char **argv) {
   final_header.load_address_le = htole16(start_address);
   write(1, &final_header, sizeof(final_header));
 }
-
-/* Local Variables: */
-/* compile-command: "cc -Wall -o bin2abs bin2abs.c" */
-/* End: */

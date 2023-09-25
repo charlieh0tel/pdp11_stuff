@@ -51,8 +51,3 @@ int main(int argc, char **argv) {
     }
   }
 }
-
-
-/* Local Variables: */
-/* compile-command: "cc -Wall -o combine combine.c" */
-/* End: */
