@@ -14,7 +14,7 @@ You can run this under simh:
 % make
 % pdp11 mdrsys.ini
 
-It does not currently respond to input.
+Enter 'G' to start.   It does not currently respond to input.
 
 
 Details
