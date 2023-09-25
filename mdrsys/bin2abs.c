@@ -18,8 +18,8 @@ struct BlockHeader {
   uint16_t load_address_le;
 } __attribute__((packed));
 
-uint8_t checksum(uint8_t *data, size_t length, uint8_t starting_sum) {
-  uint8_t sum = starting_sum;
+uint8_t checksum(uint8_t *data, size_t length) {
+  uint8_t sum = 0;
   for (size_t i = 0; i < length; ++i) {
     sum += data[i];
   }
@@ -75,8 +75,8 @@ int main(int argc, char **argv) {
     header.load_address_le = htole16(load_address);
 
     uint8_t cs =
-      0 - checksum(data, nr,
-		   checksum((uint8_t *) &header, sizeof(header), 0));
+      0 - (checksum(data, nr) +
+	   checksum((uint8_t *) &header, sizeof(header)));
 
     write(1, &header, sizeof(header));
     write(1, data, nr);
