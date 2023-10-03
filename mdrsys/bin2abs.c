@@ -30,24 +30,32 @@ int main(int argc, char **argv) {
   assert(sizeof(struct BlockHeader) == 6);
 
   int fd = 0;
+  unsigned long load_address = strtoul(argv[1], NULL, 0);
+  uint16_t start_address = kNoStartAddress;
+  
   switch (argc) {
   case 2:
     break;
+  case 4:
+    start_address = strtoul(argv[2], NULL, 0);
+    /*fallthrough*/
   case 3:
-    fd = open(argv[2], O_RDONLY);
+    fd = open(argv[argc - 1], O_RDONLY);
     if (fd < 0) {
       fprintf(stderr, "%s: open: %m\n", argv[0]);
       exit(1);
     }
     break;
   default:
-    fprintf(stderr, "usage: %s load_addr [file]\n", argv[0]);
+    fprintf(stderr, "usage: %s load_addr [start address] [file]\n", argv[0]);
     exit(1);
   }
 
-  unsigned long load_address = strtoul(argv[1], NULL, 0);
-  uint16_t start_address = kNoStartAddress;
-  
+  if (start_address > 0xffff) {
+    fprintf(stderr, "%s: start address too large\n", argv[0]);
+    exit(0);
+  }
+
   fprintf(stderr, "load address = 0x%04lx = 0%06lo\n",
 	  load_address, load_address);
   fprintf(stderr, "start address = 0x%04x = 0%06o\n",

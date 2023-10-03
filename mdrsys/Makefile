@@ -1,11 +1,12 @@
 CFLAGS:=-Wall -Werror
 LOAD_ADDRESS:=0100000
+START_ADDRESS:=0143000
 
 all: mdrsys.abs checksum
 .PHONY: clean
 
 mdrsys.abs: mdrsys_le16.bin bin2abs
-	./bin2abs $(LOAD_ADDRESS) mdrsys_le16.bin > $@
+	./bin2abs $(LOAD_ADDRESS) $(START_ADDRESS) mdrsys_le16.bin > $@
 
 mdrsys_le16.bin: r4_19_apr_83_le16.bin r5_19_apr_83_le16.bin r6_19_apr_83_le16.bin
 	cat $^ > $@
