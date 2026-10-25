@@ -30,7 +30,7 @@ clean:
 	rm -f mdrsys_le16.bin mdrsys.abs
 	rm -f r4_19_apr_83_le16.bin
 	rm -f r5_19_apr_83_le16.bin
-	rm -f r6_19_apr_83_le16.bin mdrsys.abs
+	rm -f r6_19_apr_83_le16.bin
 	rm -f combine checksum bin2abs
 
 .PHONY: clean
