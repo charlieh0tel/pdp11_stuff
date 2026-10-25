@@ -31,7 +31,7 @@ WEIRTON SCHEDULER VERSION 1.0
   - Document #29: pickler production report
 - Menus are titled "#3 PRODUCTION REPORTING AND PLANNING" and
   "#4 PRODUCTION REPORTING AND PLANNING", probably one per pickle line.
-  Access is password protected.
+  Access is password protected; the password is `MDRE5P`.
 - "Bidding" refers to starting tasks ("STARTUP BID ERROR BIDDING
   TASK"), as in RSX-11 terminology.  The ROM contains a small
   multitasking executive with task control blocks, stack-overflow
