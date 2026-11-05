@@ -1,6 +1,7 @@
 import binascii
 import re
 from collections.abc import Iterator
+from unittest.mock import Mock
 
 import pexpect
 import pytest
@@ -62,6 +63,13 @@ def test_uuencode_frame() -> None:
 
 def test_uuencode_never_ends_a_line_with_space() -> None:
     assert not any(line.endswith(" ") for line in uuencode(b"\x00" * 90, "f"))
+
+
+@pytest.mark.parametrize(("sync", "command"), [(True, "halt\r"), (False, "halt -n\r")])
+def test_halt_syncs_only_when_asked(sync: bool, command: str) -> None:
+    child = Mock()
+    Console(child).halt(sync=sync)
+    child.send.assert_called_once_with(command)
 
 
 def test_status_pattern_ignores_the_typed_command() -> None:

@@ -182,8 +182,8 @@ class Console:
         now = time.strftime("%y%m%d%H%M", time.gmtime())
         self.shell(f"date -n -u {now}", check=check)
 
-    def halt(self) -> None:
-        self.send("halt\r")
+    def halt(self, *, sync: bool = True) -> None:
+        self.send("halt\r" if sync else "halt -n\r")
         self.expect(SIM_PROMPT)
 
     def interrupt(self) -> None:

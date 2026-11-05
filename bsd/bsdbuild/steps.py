@@ -145,7 +145,8 @@ def check_root(console: Console) -> None:
     console.set_clock(check=False)
     # Exits nonzero when it finds anything to report.
     console.shell(f"fsck /dev/{config.ROOT.device}", check=False)
-    console.halt()
+    # A sync would write the old in-memory superblock over fsck's repairs.
+    console.halt(sync=False)
 
 
 def extract_usr_src(console: Console) -> None:
