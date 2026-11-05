@@ -178,9 +178,9 @@ class Console:
         """Copies a file from the custom directory to path on the guest."""
         self.write_file(path, (CUSTOM_DIR / name).read_bytes(), owner, group, mode)
 
-    def set_clock(self, *, check: bool = True) -> None:
+    def set_clock(self) -> None:
         now = time.strftime("%y%m%d%H%M", time.gmtime())
-        self.shell(f"date -n -u {now}", check=check)
+        self.shell(f"date -n -u {now}")
 
     def halt(self, *, sync: bool = True) -> None:
         self.send("halt\r" if sync else "halt -n\r")

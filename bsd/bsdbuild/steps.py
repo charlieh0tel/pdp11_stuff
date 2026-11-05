@@ -94,8 +94,7 @@ def build_usr(console: Console) -> None:
     usr = config.USR.device
     console.boot_to_single_user("rq0")
     console.shell(f"hostname {config.HOSTNAME}")
-    # Exits 2 because it cannot write wtmp yet.
-    console.set_clock(check=False)
+    console.set_clock()
 
     console.shell(f"newfs {usr}", timeout=LONG_TIMEOUT_SECONDS)
     console.shell(f"mount /dev/{usr} /usr")
@@ -141,8 +140,7 @@ def build_usr(console: Console) -> None:
 def check_root(console: Console) -> None:
     console.boot_to_single_user("rq0")
     console.shell(f"hostname {config.HOSTNAME}")
-    # Exits 2 because it cannot write wtmp yet.
-    console.set_clock(check=False)
+    console.set_clock()
     # Exits nonzero when it finds anything to report.
     console.shell(f"fsck /dev/{config.ROOT.device}", check=False)
     # A sync would write the old in-memory superblock over fsck's repairs.
