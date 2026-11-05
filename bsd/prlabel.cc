@@ -140,14 +140,16 @@ uint32_t pdp_to_native(uint32_t pdp_long) {
   return (words << 16) | (words >> 16);
 }
 
-uint16_t dkcksum(const struct disklabel *lp)
+// XOR of the label's 16-bit words through the last partition entry.
+// A good label sums to zero.
+uint16_t dkcksum(const struct disklabel *lp, int npartitions)
 {
   auto start = reinterpret_cast<const uint8_t *>(lp);
-  auto end = reinterpret_cast<const uint8_t *>(&lp->d_partitions[lp->d_npartitions]);
+  auto end = reinterpret_cast<const uint8_t *>(&lp->d_partitions[npartitions]);
 
   uint16_t sum = 0;
-  while (start < end)
-    sum ^= *start++;
+  for (; start < end; start += 2)
+    sum ^= start[0] | (start[1] << 8);
   return sum;
 }
 
@@ -236,7 +238,7 @@ int main(int argc, char **argv) {
     d_npartitions = MAXPARTITIONS;
   }
 
-  const auto checksum = dkcksum(disklabel);
+  const auto checksum = dkcksum(disklabel, d_npartitions);
   if (checksum) {
     std::cout << std::hex << "checksum=" << std::hex << checksum << std::endl;
     std::cerr << "Partition checksum is bad." << std::endl;
