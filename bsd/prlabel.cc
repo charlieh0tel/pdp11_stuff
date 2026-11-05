@@ -88,7 +88,7 @@ std::string convert_d_type(uint8_t d_type) {
     return dktypenames[d_type];
   } else {
     std::ostringstream out;
-    out << "BAD(0x" << std::hex << std::setfill('0') << std::setw(2) << d_type << ")";
+    out << "BAD(0x" << std::hex << std::setfill('0') << std::setw(2) << int(d_type) << ")";
     return out.str();
   }
 }
@@ -119,7 +119,7 @@ std::string convert_fstype(uint8_t fstype) {
     return fstypenames[fstype];
   } else {
     std::ostringstream out;
-    out << "BAD(0x" << std::hex << std::setfill('0') << std::setw(2) << fstype << ")";
+    out << "BAD(0x" << std::hex << std::setfill('0') << std::setw(2) << int(fstype) << ")";
     return out.str();
   }
 }
