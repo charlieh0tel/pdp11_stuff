@@ -4,7 +4,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-URL_BASE="https://www.tuhs.org/Archive/Distributions/UCB"
+URL_BASE="https://www.tuhs.org/Archive/Distributions/UCB/2BSD"
 DIR="2.11BSD_patch457"
 OUT="${DIR}.tape0"
 TMP="${OUT}.tmp"
