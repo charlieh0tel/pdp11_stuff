@@ -1,7 +1,7 @@
 #
 
 prlabel: prlabel.cc disklabel.h
-	c++ -Wall -Wpedantic -o prlabel prlabel.cc
+	c++ -std=c++17 -Wall -Wpedantic -o prlabel prlabel.cc
 
 
 .PHONY: clean
