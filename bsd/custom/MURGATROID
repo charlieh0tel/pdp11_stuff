@@ -11,7 +11,7 @@ PDP11		53			# PDP-11/73,53,83,93,84,94
 # GENERAL SYSTEM PARAMETERS		#
 #########################################
 
-IDENT		MURGATRID		# machine name
+IDENT		MURGATROID		# machine name
 MAXUSERS	20			# maxusers on machine
 
 # BOOTDEV is the letter combination denoting the autoboot device,

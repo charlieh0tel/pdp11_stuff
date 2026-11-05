@@ -1,4 +1,4 @@
-OPTS=-DMURGATRID -DUCB_METER -DINET -DUCB_CLIST
+OPTS=-DMURGATROID -DUCB_METER -DINET -DUCB_CLIST
 #
 # Copyright (c) 1988 Regents of the University of California.
 # All rights reserved.
