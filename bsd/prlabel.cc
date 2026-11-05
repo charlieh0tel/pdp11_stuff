@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <boost/endian/conversion.hpp>
@@ -94,28 +95,19 @@ std::string convert_d_type(uint8_t d_type) {
 
 std::string convert_d_flags(uint16_t d_flags) {
   std::ostringstream out;
-  bool first = true;
+  const char *separator = "";
   out << "{";
-  if (d_flags & D_REMOVABLE) {
-    out << "REMOVABLE";
-    first = false;
+  for (const auto &[flag, name] : {std::pair{D_REMOVABLE, "REMOVABLE"},
+                                   std::pair{D_ECC, "ECC"},
+                                   std::pair{D_BADSECT, "BADSECT"},
+                                   std::pair{D_RAMDISK, "RAMDISK"}}) {
+    if (d_flags & flag) {
+      out << separator << name;
+      separator = ", ";
+    }
   }
-  if (d_flags & D_ECC) {
-    if (!first) out << ", ";
-    out << "ECC";
-  }
-  if (d_flags & D_BADSECT) {
-    if (!first) out << ", ";
-    out << "BADSECT";
-  }
-  if (d_flags & D_RAMDISK) {
-    if (!first) out << ", ";
-    out << "RAMIDSK";
-  }
-
   if (d_flags & ~(D_REMOVABLE | D_ECC | D_BADSECT | D_RAMDISK)) {
-    if (!first) out << ", ";
-    out << "(others) flags=0x" << std::hex << std::setfill('0') << std::setw(4) << d_flags;
+    out << separator << "(others) flags=0x" << std::hex << std::setfill('0') << std::setw(4) << d_flags;
   }
   out << "}";
 
