@@ -222,8 +222,8 @@ int main(int argc, char **argv) {
   std::cout << "d_flags=" << convert_d_flags(boost::endian::little_to_native(disklabel->d_flags)) << std::endl;
   std::cout << std::endl;
 
-  std::cout << "d_drivedata=" << Dump(&(disklabel->d_drivedata), NDDATA, false) << std::endl;
-  std::cout << "d_spare=" << Dump(&(disklabel->d_spare), NSPARE, false) << std::endl;
+  std::cout << "d_drivedata=" << Dump(&(disklabel->d_drivedata), sizeof(disklabel->d_drivedata), false) << std::endl;
+  std::cout << "d_spare=" << Dump(&(disklabel->d_spare), sizeof(disklabel->d_spare), false) << std::endl;
 
   std::cout << "d_bbsize=" << int(boost::endian::little_to_native(disklabel->d_bbsize)) << std::endl;
   std::cout << "d_sbsize=" << int(boost::endian::little_to_native(disklabel->d_sbsize)) << std::endl;
