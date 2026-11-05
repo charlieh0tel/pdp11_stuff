@@ -28,7 +28,7 @@ ROOTDEV		makedev(5,0)		# ra0a
 SWAPDEV		makedev(5,1)		# ra0b
 
 # DUMPROUTINE indicates which dump routine should be used.
-DUMPLO		512			# dump start address
+DUMPLO		256			# dump start, in sectors; leaves room for 4 MB
 DUMPDEV		makedev(5,1)		# ra0b
 DUMPROUTINE	radump
 
