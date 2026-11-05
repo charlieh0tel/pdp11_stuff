@@ -37,4 +37,5 @@ step when its image is older than its prerequisites.
 
 ## Source
 
-Tape: <https://www.tuhs.org/Archive/Distributions/UCB/2BSD/2.11BSD_patch457/>
+Tape: <https://www.tuhs.org/Archive/Distributions/UCB/2BSD/>, in the
+directory for the `PATCHLEVEL` set in the `Makefile`.

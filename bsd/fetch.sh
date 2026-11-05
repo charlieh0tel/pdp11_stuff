@@ -1,13 +1,20 @@
 #!/bin/bash
 #
-# Downloads the 2.11BSD distribution tape unless it is already present.
+# Downloads a 2.11BSD distribution tape unless it is already present.
+#
+# Usage: fetch.sh PATCHLEVEL
 
 set -o errexit
 set -o nounset
 set -o pipefail
 
+if [[ "$#" -ne 1 ]]; then
+  echo "usage: $0 PATCHLEVEL" >&2
+  exit 2
+fi
+
 readonly URL_BASE="https://www.tuhs.org/Archive/Distributions/UCB/2BSD"
-readonly DIR="2.11BSD_patch457"
+readonly DIR="2.11BSD_patch$1"
 readonly OUT="${DIR}.tape0"
 readonly TMP="${OUT}.tmp"
 
@@ -23,4 +30,4 @@ main() {
   mv "${TMP}" "${OUT}"
 }
 
-main "$@"
+main

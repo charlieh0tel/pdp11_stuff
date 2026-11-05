@@ -1,7 +1,8 @@
 # Builds a customized 2.11BSD disk image.  Each build step produces its own
 # stage image from the previous one, so a change reruns only what it affects.
 
-DIST := 2.11BSD_patch457
+PATCHLEVEL := 457
+DIST := 2.11BSD_patch$(PATCHLEVEL)
 TAPE := $(DIST).tape0
 DISK := $(DIST)-root.ra92
 
@@ -20,7 +21,7 @@ SITE_FILES := $(addprefix custom/,rc rc.local hosts networks netstart \
 all: $(DISK)
 
 $(TAPE):
-	./fetch.sh
+	./fetch.sh $(PATCHLEVEL)
 
 $(call stage,0): $(BASE_SOURCES)
 $(call stage,1): $(call stage,0) $(BASE_SOURCES)
