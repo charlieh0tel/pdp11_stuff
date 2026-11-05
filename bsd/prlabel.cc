@@ -133,6 +133,13 @@ std::string convert_fstype(uint8_t fstype) {
 }
 
 
+// The PDP-11 stores a 32-bit long as two little-endian 16-bit words,
+// high word first.
+uint32_t pdp_to_native(uint32_t pdp_long) {
+  const uint32_t words = boost::endian::little_to_native(pdp_long);
+  return (words << 16) | (words >> 16);
+}
+
 uint16_t dkcksum(const struct disklabel *lp)
 {
   auto start = reinterpret_cast<const uint8_t *>(lp);
@@ -194,7 +201,7 @@ int main(int argc, char **argv) {
   std::cout << "d_ntracks=" << boost::endian::little_to_native(disklabel->d_ntracks) << std::endl;
   std::cout << "d_ncylinders=" << boost::endian::little_to_native(disklabel->d_ncylinders) << std::endl;
   std::cout << "d_secpercyl=" << boost::endian::little_to_native(disklabel->d_secpercyl) << std::endl;
-  std::cout << "d_secperunit=" << boost::endian::little_to_native(disklabel->d_secperunit) << std::endl;
+  std::cout << "d_secperunit=" << pdp_to_native(disklabel->d_secperunit) << std::endl;
   std::cout << std::endl;
 
   std::cout << "d_sparespertrack=" << boost::endian::little_to_native(disklabel->d_sparespertrack) << std::endl;
@@ -238,8 +245,8 @@ int main(int argc, char **argv) {
   for (int i=0; i < d_npartitions; ++i) {
     std::cout << "part #" << i << std::endl;
     std::cout << "  p_fstype=" << convert_fstype(disklabel->d_partitions[i].p_fstype) << std::endl;
-    std::cout << "  p_size=" << boost::endian::little_to_native(disklabel->d_partitions[i].p_size) << std::endl;
-    std::cout << "  p_offset=" << boost::endian::little_to_native(disklabel->d_partitions[i].p_offset) << std::endl;
+    std::cout << "  p_size=" << pdp_to_native(disklabel->d_partitions[i].p_size) << std::endl;
+    std::cout << "  p_offset=" << pdp_to_native(disklabel->d_partitions[i].p_offset) << std::endl;
     std::cout << "  p_fsize=" << boost::endian::little_to_native(disklabel->d_partitions[i].p_fsize) << std::endl;
   }
 }
