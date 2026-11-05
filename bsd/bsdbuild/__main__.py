@@ -5,10 +5,21 @@ import os
 import sys
 from pathlib import Path
 
-from bsdbuild import config
+from bsdbuild import config, steps
 from bsdbuild.console import ConsoleError, simulator
-from bsdbuild.steps import STEPS
+from bsdbuild.customize import customize
 
+# Build steps in order; a step's number is its index.
+STEPS = (
+    steps.write_label,
+    steps.restore_root,
+    steps.install_boot_block,
+    steps.build_usr,
+    steps.check_root,
+    steps.extract_usr_src,
+    steps.build_kernel,
+    customize,
+)
 FIRST_STEP = 0
 
 

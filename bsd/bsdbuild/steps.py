@@ -1,6 +1,4 @@
-"""The build steps, in order; each starts at the simulator's first prompt."""
-
-from collections.abc import Callable
+"""The steps through the kernel; each starts at the simulator's first prompt."""
 
 from bsdbuild import config
 from bsdbuild.console import BOOT_PROMPT, LONG_TIMEOUT_SECONDS, Console
@@ -188,41 +186,3 @@ def build_kernel(console: Console) -> None:
     console.copy_custom_file("dtab", "/etc/dtab", "root", "wheel", "0644")
     console.shell("sync")
     console.halt()
-
-
-def customize(console: Console) -> None:
-    console.boot_to_multiuser()
-    console.shell(f"hostname {config.HOSTNAME}")
-    console.set_clock()
-
-    console.shell("rm -f /*.core")
-    console.shell("rm /disklabel")
-    console.shell("rm /toyset")
-    console.shell("rm /etc/dtab.save")
-
-    console.copy_custom_file("rc", "/etc/rc", "root", "wheel", "0644")
-    console.copy_custom_file("rc.local", "/etc/rc.local", "root", "wheel", "0755")
-
-    for name in ("hosts", "networks", "netstart", "ntp.conf", "resolv.conf"):
-        console.copy_custom_file(name, f"/etc/{name}", "root", "wheel", "0644")
-    console.shell("mv /etc/inetd.conf /etc/inetd.conf.wrappers")
-    console.shell("mv /etc/inetd.conf.nowrappers /etc/inetd.conf")
-    console.write_file("/etc/hosts.equiv", b"", "root", "wheel", "0600")
-
-    console.copy_custom_file("ttys", "/etc/ttys", "root", "wheel", "0644")
-
-    console.shell("sync")
-    console.halt()
-
-
-# Build steps in order; a step's number is its index.
-STEPS: tuple[Callable[[Console], None], ...] = (
-    write_label,
-    restore_root,
-    install_boot_block,
-    build_usr,
-    check_root,
-    extract_usr_src,
-    build_kernel,
-    customize,
-)
