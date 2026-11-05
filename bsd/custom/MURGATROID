@@ -29,7 +29,7 @@ SWAPDEV		makedev(5,1)		# ra0b
 
 # DUMPROUTINE indicates which dump routine should be used.
 DUMPLO		512			# dump start address
-DUMPDEV		makedev(5,2)		# ra0b
+DUMPDEV		makedev(5,1)		# ra0b
 DUMPROUTINE	radump
 
 #########################################
