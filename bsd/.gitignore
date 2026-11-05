@@ -1,7 +1,5 @@
 prlabel
-*.tape0
-*.ra92
-2.11BSD_patch457-root.ra92.post-06-snap
+2.11BSD_patch*
 old
 .venv/
 __pycache__/
