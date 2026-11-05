@@ -240,7 +240,7 @@ int main(int argc, char **argv) {
 
   const auto checksum = dkcksum(disklabel, d_npartitions);
   if (checksum) {
-    std::cout << std::hex << "checksum=" << std::hex << checksum << std::endl;
+    std::cout << "checksum=" << std::hex << checksum << std::dec << std::endl;
     std::cerr << "Partition checksum is bad." << std::endl;
   }
 
