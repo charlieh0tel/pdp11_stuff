@@ -125,6 +125,12 @@ std::string convert_fstype(uint8_t fstype) {
 }
 
 
+// Label strings are fixed-size and need not be NUL-terminated.
+template <size_t N>
+std::string label_string(const char (&field)[N]) {
+  return std::string(field, strnlen(field, N));
+}
+
 // The PDP-11 stores a 32-bit long as two little-endian 16-bit words,
 // high word first.
 uint32_t pdp_to_native(uint32_t pdp_long) {
@@ -186,8 +192,8 @@ int main(int argc, char **argv) {
   std::cout << "d_subtype=" << convert_d_type(d_subtype) << std::endl;
   std::cout << std::endl;
 
-  std::cout << "d_typename=" << disklabel->d_typename << std::endl;
-  std::cout << "d_un.un_d_packname=\"" << disklabel->d_un.un_d_packname << "\"" <<  std::endl;
+  std::cout << "d_typename=" << label_string(disklabel->d_typename) << std::endl;
+  std::cout << "d_un.un_d_packname=\"" << label_string(disklabel->d_un.un_d_packname) << "\"" <<  std::endl;
   std::cout << std::endl;
 
   std::cout << "d_secsize=" << boost::endian::little_to_native(disklabel->d_secsize) << std::endl;
