@@ -1,7 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 
-URL_BASE="https://www.tuhs.org/Archive/Distributions/UCB/"
+set -o errexit
+set -o nounset
+set -o pipefail
+
+URL_BASE="https://www.tuhs.org/Archive/Distributions/UCB"
 DIR="2.11BSD_patch457"
 OUT="${DIR}.tape0"
+TMP="${OUT}.tmp"
 
-curl "${URL_BASE}/${DIR}/tape0.bz2" | bunzip2 > "${OUT}"
+trap 'rm -f "${TMP}"' EXIT
+
+curl --fail --location --silent --show-error "${URL_BASE}/${DIR}/tape0.bz2" | bunzip2 > "${TMP}"
+mv "${TMP}" "${OUT}"
