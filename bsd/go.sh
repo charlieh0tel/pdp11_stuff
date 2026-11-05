@@ -1,23 +1,34 @@
 #!/bin/bash
+#
+# Builds the disk image, reusing the snapshot taken after the kernel step.
 
 set -o errexit
+set -o nounset
 set -o xtrace
 
-PATCHLEVEL=457
+readonly PATCHLEVEL=457
+readonly TAPE="2.11BSD_patch${PATCHLEVEL}.tape0"
+readonly DISK="2.11BSD_patch${PATCHLEVEL}-root.ra92"
+readonly SNAPSHOT="${DISK}.post-06-snap"
+readonly LAST_SNAPSHOT_STEP=6
+readonly LAST_STEP=7
 
-DISK="2.11BSD_patch${PATCHLEVEL}-root.ra92"
+run_step() {
+  uv run python -m bsdbuild "$1" "${TAPE}" "${DISK}"
+}
 
-if [ -e "${DISK}.post-06-snap" ]; then
-    cp -p "${DISK}.post-06-snap" "${DISK}"
-else
+main() {
+  local step
+  if [[ -e "${SNAPSHOT}" ]]; then
+    cp --preserve=timestamps --sparse=always "${SNAPSHOT}" "${DISK}"
+  else
     rm -f "${DISK}"
-    ./00_build_disk.expect
-    ./01_build_root.expect
-    ./02_bootstrap_disk.expect
-    ./03_build_usr.expect
-    ./04_fsck_root.expect
-    ./05_usr_src.expect
-    ./06_kernel.expect
-    cp -p "${DISK}" "${DISK}.post-06-snap"
-fi
-./07_customize.expect
+    for ((step = 0; step <= LAST_SNAPSHOT_STEP; step++)); do
+      run_step "${step}"
+    done
+    cp --preserve=timestamps --sparse=always "${DISK}" "${SNAPSHOT}"
+  fi
+  run_step "${LAST_STEP}"
+}
+
+main "$@"

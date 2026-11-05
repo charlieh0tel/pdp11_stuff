@@ -1,0 +1,23 @@
+[project]
+name = "bsdbuild"
+version = "0.1.0"
+description = "Builds a customized 2.11BSD disk image on SIMH"
+requires-python = ">=3.11"
+dependencies = ["pexpect>=4.9"]
+
+[dependency-groups]
+dev = ["mypy", "pytest", "ruff", "types-pexpect"]
+
+[tool.uv]
+package = false
+
+[tool.mypy]
+files = ["bsdbuild", "tests"]
+strict = true
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
